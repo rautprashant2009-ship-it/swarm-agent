@@ -1,0 +1,236 @@
+{
+  "$schema": "./schema/config.schema.json",
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8000,
+    "api_key_auth": null,
+    "log_level": "INFO",
+    "cors_origins": ["*"]
+  },
+  "providers": {
+    "google": {
+      "enabled": true,
+      "api_key": "${GEMINI_API_KEY}",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "priority": 1,
+      "base_cooldown_seconds": 30.0,
+      "rate_limit": {
+        "requests_per_minute": 15,
+        "tokens_per_minute": 1000000,
+        "daily_free_requests": 1500
+      },
+      "models": [
+        "gemini-3.8-flash-high",
+        "gemini-2.5-flash",
+        "gemini-2.5-pro"
+      ]
+    },
+    "siliconflow": {
+      "enabled": true,
+      "api_key": "${SILICONFLOW_API_KEY}",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "priority": 1,
+      "base_cooldown_seconds": 30.0,
+      "rate_limit": {
+        "requests_per_minute": 60,
+        "tokens_per_minute": 200000,
+        "daily_free_requests": 2000
+      },
+      "models": [
+        "deepseek-ai/DeepSeek-V4",
+        "deepseek-ai/DeepSeek-V3",
+        "Qwen/Qwen2.5-72B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ]
+    },
+    "moonshot": {
+      "enabled": true,
+      "api_key": "${MOONSHOT_API_KEY}",
+      "base_url": "https://api.moonshot.cn/v1",
+      "priority": 1,
+      "base_cooldown_seconds": 60.0,
+      "rate_limit": {
+        "requests_per_minute": 30,
+        "tokens_per_minute": 128000,
+        "daily_free_requests": 1000
+      },
+      "models": [
+        "kimi-k3",
+        "moonshot-v1-8k",
+        "moonshot-v1-32k"
+      ]
+    },
+    "zhipu": {
+      "enabled": true,
+      "api_key": "${ZHIPU_API_KEY}",
+      "base_url": "https://open.bigmodel.cn/api/paas/v4",
+      "priority": 1,
+      "base_cooldown_seconds": 30.0,
+      "rate_limit": {
+        "requests_per_minute": 60,
+        "tokens_per_minute": 200000,
+        "daily_free_requests": 2000
+      },
+      "models": [
+        "glm-5.3",
+        "glm-4-flash",
+        "glm-4-plus"
+      ]
+    },
+    "dashscope": {
+      "enabled": true,
+      "api_key": "${DASHSCOPE_API_KEY}",
+      "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "priority": 1,
+      "base_cooldown_seconds": 30.0,
+      "rate_limit": {
+        "requests_per_minute": 60,
+        "tokens_per_minute": 180000,
+        "daily_free_requests": 1500
+      },
+      "models": [
+        "qwen-3.8",
+        "qwen-plus",
+        "qwen-turbo",
+        "qwen-max"
+      ]
+    },
+    "openrouter": {
+      "enabled": true,
+      "api_key": "${OPENROUTER_API_KEY}",
+      "base_url": "https://openrouter.ai/api/v1",
+      "priority": 2,
+      "base_cooldown_seconds": 60.0,
+      "rate_limit": {
+        "requests_per_minute": 20,
+        "tokens_per_minute": 50000,
+        "daily_free_requests": 1000
+      },
+      "models": [
+        "openrouter/auto",
+        "deepseek/deepseek-r1:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "qwen/qwen-2.5-coder-32b-instruct:free",
+        "google/gemini-2.0-flash-exp:free"
+      ]
+    },
+    "groq": {
+      "enabled": true,
+      "api_key": "${GROQ_API_KEY}",
+      "base_url": "https://api.groq.com/openai/v1",
+      "priority": 2,
+      "base_cooldown_seconds": 30.0,
+      "rate_limit": {
+        "requests_per_minute": 30,
+        "tokens_per_minute": 6000,
+        "daily_free_requests": 14400
+      },
+      "models": [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "mixtral-8x7b-32768"
+      ]
+    },
+    "cerebras": {
+      "enabled": true,
+      "api_key": "${CEREBRAS_API_KEY}",
+      "base_url": "https://api.cerebras.ai/v1",
+      "priority": 2,
+      "base_cooldown_seconds": 30.0,
+      "rate_limit": {
+        "requests_per_minute": 30,
+        "tokens_per_minute": 60000,
+        "daily_free_requests": 14400
+      },
+      "models": [
+        "llama3.1-8b",
+        "llama3.1-70b"
+      ]
+    }
+  },
+  "alias_mappings": {
+    "deepseek-v4-pro": [
+      {"provider": "siliconflow", "model": "deepseek-ai/DeepSeek-V3"},
+      {"provider": "openrouter", "model": "deepseek/deepseek-r1:free"},
+      {"provider": "groq", "model": "llama-3.3-70b-versatile"}
+    ],
+    "deepseek-v4": [
+      {"provider": "siliconflow", "model": "deepseek-ai/DeepSeek-V3"},
+      {"provider": "openrouter", "model": "deepseek/deepseek-r1:free"},
+      {"provider": "groq", "model": "llama-3.3-70b-versatile"}
+    ],
+    "kimi-k3": [
+      {"provider": "moonshot", "model": "moonshot-v1-32k"},
+      {"provider": "siliconflow", "model": "deepseek-ai/DeepSeek-V3"},
+      {"provider": "zhipu", "model": "glm-4-flash"}
+    ],
+    "glm-5.3": [
+      {"provider": "zhipu", "model": "glm-4-flash"},
+      {"provider": "siliconflow", "model": "THUDM/glm-4-9b-chat"},
+      {"provider": "openrouter", "model": "meta-llama/llama-3.3-70b-instruct:free"}
+    ],
+    "glm-4.5": [
+      {"provider": "zhipu", "model": "glm-4-flash"},
+      {"provider": "siliconflow", "model": "THUDM/glm-4-9b-chat"},
+      {"provider": "openrouter", "model": "meta-llama/llama-3.3-70b-instruct:free"}
+    ],
+    "qwen-3.8": [
+      {"provider": "dashscope", "model": "qwen-plus"},
+      {"provider": "siliconflow", "model": "Qwen/Qwen2.5-7B-Instruct"},
+      {"provider": "openrouter", "model": "qwen/qwen-2.5-coder-32b-instruct:free"}
+    ],
+    "qwen-2.5-coder": [
+      {"provider": "dashscope", "model": "qwen-plus"},
+      {"provider": "siliconflow", "model": "Qwen/Qwen2.5-7B-Instruct"},
+      {"provider": "openrouter", "model": "qwen/qwen-2.5-coder-32b-instruct:free"}
+    ],
+    "gemini-3.8-flash-high": [
+      {"provider": "google", "model": "gemini-2.5-flash"},
+      {"provider": "openrouter", "model": "google/gemini-2.0-flash-exp:free"},
+      {"provider": "groq", "model": "llama-3.3-70b-versatile"}
+    ],
+    "gemini-flash": [
+      {"provider": "google", "model": "gemini-2.5-flash"},
+      {"provider": "openrouter", "model": "google/gemini-2.0-flash-exp:free"},
+      {"provider": "groq", "model": "llama-3.3-70b-versatile"}
+    ],
+    "muse-spark": [
+      {"provider": "openrouter", "model": "meta-llama/llama-3.3-70b-instruct:free"},
+      {"provider": "cerebras", "model": "llama3.1-70b"},
+      {"provider": "siliconflow", "model": "Qwen/Qwen2.5-7B-Instruct"}
+    ]
+  },
+  "routing": {
+    "default_model": "deepseek-v4-pro",
+    "aliases": {
+      "deepseek-v4-pro": ["siliconflow/deepseek-ai/DeepSeek-V3", "openrouter/deepseek/deepseek-r1:free", "groq/llama-3.3-70b-versatile"],
+      "kimi-k3": ["moonshot/moonshot-v1-32k", "siliconflow/deepseek-ai/DeepSeek-V3", "zhipu/glm-4-flash"],
+      "glm-5.3": ["zhipu/glm-4-flash", "siliconflow/THUDM/glm-4-9b-chat", "openrouter/meta-llama/llama-3.3-70b-instruct:free"],
+      "qwen-3.8": ["dashscope/qwen-plus", "siliconflow/Qwen/Qwen2.5-7B-Instruct", "openrouter/qwen/qwen-2.5-coder-32b-instruct:free"],
+      "gemini-3.8-flash-high": ["google/gemini-2.5-flash", "openrouter/google/gemini-2.0-flash-exp:free", "groq/llama-3.3-70b-versatile"],
+      "muse-spark": ["openrouter/meta-llama/llama-3.3-70b-instruct:free", "cerebras/llama3.1-70b", "siliconflow/Qwen/Qwen2.5-7B-Instruct"]
+    },
+    "failover_cooldown_seconds": 60,
+    "max_failover_hops": 4
+  },
+  "compression": {
+    "enabled": true,
+    "history_window_turns": 10,
+    "system_prompt_dedup": true,
+    "static_prefix_caching": true,
+    "similarity_threshold": 0.85
+  },
+  "tools": {
+    "powershell_enabled": true,
+    "powershell_timeout_seconds": 60,
+    "allowed_workspace_roots": [
+      "C:\\Users\\Admin\\.gemini\\antigravity\\scratch\\swarm-agent"
+    ],
+    "blocked_command_patterns": [
+      "(?i)format-[a-z]+",
+      "(?i)stop-computer",
+      "(?i)restart-computer",
+      "(?i)remove-item\\s+.*-recurse.*[c-z]:\\\\$"
+    ]
+  }
+}
