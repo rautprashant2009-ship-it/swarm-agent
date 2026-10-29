@@ -1,0 +1,28 @@
+{
+  "name": "swarm-agent-plugin",
+  "displayName": "Swarm Agent Multi-Provider Frontier Gateway",
+  "version": "1.0.0",
+  "description": "Multi-provider token gateway and autonomous multi-agent swarm runtime across 8 frontier AI providers with 429 failover, context compression, and 3-tier feedback loops.",
+  "logo": "https://www.gstatic.com/antigravity/logos/antigravity-icon__full-color.png",
+  "author": {
+    "name": "Swarm Team"
+  },
+  "keywords": [
+    "swarm",
+    "gateway",
+    "frontier-models",
+    "deepseek",
+    "kimi",
+    "glm",
+    "qwen",
+    "gemini",
+    "multi-agent",
+    "failover",
+    "compression"
+  ],
+  "suggestedPrompts": [
+    "Ask Swarm across DeepSeek-V4, Kimi-K3, and GLM-5.3 to solve this complex task",
+    "Run Swarm 3-tier autonomous self-healing test loop on my project",
+    "Check Swarm model catalog and circuit breaker status"
+  ]
+}

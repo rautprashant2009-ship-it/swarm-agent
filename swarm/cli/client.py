@@ -269,6 +269,89 @@ def compress_prompt(input_file: Optional[str], turns: int):
 
 
 
+@cli.group(name="antigravity", help="Manage temporary Antigravity integration (attach, detach, status, test).")
+def antigravity_group():
+    """Antigravity integration command group."""
+    pass
+
+
+@antigravity_group.command("attach", help="Temporarily attach Swarm Agent into Antigravity.")
+def antigravity_attach():
+    from swarm.antigravity import AntigravityIntegrationManager
+    manager = AntigravityIntegrationManager()
+    res = manager.attach()
+    print("==================================================================")
+    print("   SWARM AGENT: Attached to Antigravity (TEMPORARY)")
+    print("==================================================================")
+    print(f"[*] MCP Server:     {res['mcp_server']} (registered in mcp_config.json)")
+    print(f"[*] Skill / Plugin: {res['plugin']}")
+    print(f"[*] Python Runtime: {res['python']}")
+    print(f"[*] State Tracker:  {res['state_file']}")
+    print("\n[+] Run detach_from_antigravity.bat or 'python -m swarm antigravity detach' to cleanly remove.")
+    print("==================================================================")
+
+
+@antigravity_group.command("detach", help="Cleanly detach Swarm Agent from Antigravity with zero residue.")
+def antigravity_detach():
+    from swarm.antigravity import AntigravityIntegrationManager
+    manager = AntigravityIntegrationManager()
+    res = manager.detach()
+    clean, issues = manager.verify_clean()
+    print("==================================================================")
+    print("   SWARM AGENT: Detached from Antigravity")
+    print("==================================================================")
+    for act in res["reverted_actions"]:
+        print(f"[-] {act}")
+    if clean:
+        print("\n[SUCCESS] Antigravity environment completely restored to original state!")
+        print("[SUCCESS] Zero residue left behind.")
+    else:
+        print(f"\n[WARNING] Remaining issues: {issues}")
+    print("==================================================================")
+
+
+@antigravity_group.command("status", help="Check Swarm Agent Antigravity integration status.")
+def antigravity_status():
+    from swarm.antigravity import AntigravityIntegrationManager
+    manager = AntigravityIntegrationManager()
+    status = manager.get_status()
+    print("==================================================================")
+    print("   SWARM AGENT: Antigravity Integration Status")
+    print("==================================================================")
+    print(f"[*] Attached:              {status['attached']}")
+    print(f"[*] MCP Server Registered: {status['mcp_server_registered']}")
+    print(f"[*] Plugin Installed:      {status['plugin_installed']}")
+    print(f"[*] Config Registered:      {status['config_registered']}")
+    print("==================================================================")
+
+
+@antigravity_group.command("test", help="Test Swarm MCP server protocol and capabilities.")
+def antigravity_test():
+    import asyncio
+    from swarm.mcp_server import SwarmMCPServer
+    server = SwarmMCPServer()
+    init_req = {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}}
+    resp = asyncio.run(server.handle_request(init_req))
+    assert resp and resp["result"]["serverInfo"]["name"] == "swarm-agent"
+    print("[+] Initialize passed!")
+
+    tools_req = {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+    tools_resp = asyncio.run(server.handle_request(tools_req))
+    tool_names = [t["name"] for t in tools_resp["result"]["tools"]]
+    print(f"[+] Tools registered ({len(tool_names)}): {', '.join(tool_names)}")
+
+    status_req = {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "tools/call",
+        "params": {"name": "swarm_system_status", "arguments": {}},
+    }
+    status_resp = asyncio.run(server.handle_request(status_req))
+    print("[+] System status tool output:")
+    print(status_resp["result"]["content"][0]["text"])
+    print("\n[SUCCESS] Antigravity MCP Integration Test passed!")
+
+
 def main() -> None:
     """Entry point for swarm executable."""
     cli()
@@ -276,3 +359,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

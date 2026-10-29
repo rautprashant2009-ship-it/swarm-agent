@@ -50,6 +50,11 @@ class PromptRegistry:
         self._total_lookups = 0
         self._total_hits = 0
 
+    def __len__(self) -> int:
+        """Return the number of cached prompt entries."""
+        with self._lock:
+            return len(self._cache)
+
     def register(
         self,
         prompt: str,

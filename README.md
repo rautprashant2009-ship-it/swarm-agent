@@ -133,6 +133,29 @@ Compatible with:
 
 ---
 
+## Antigravity Integration (Temporary & Easily Removable)
+
+Swarm Agent includes first-class temporary integration for Google Antigravity via an MCP Server (`swarm.mcp_server`) and Skill/Plugin (`swarm-agent-plugin`). This enables Antigravity to command the swarm across all 7 frontier models and unleash 3-tier feedback loops without manual configuration.
+
+### 1-Click Attach (Temporary Testing)
+```cmd
+attach_to_antigravity.bat
+```
+- Backs up your existing `mcp_config.json` and `config.json`.
+- Registers `swarm-agent` MCP stdio server with tools: `swarm_chat`, `swarm_run_autonomous_loop`, `swarm_model_catalog`, `swarm_system_status`, `swarm_powershell_exec`, and `swarm_compress_context`.
+- Deploys `swarm-agent-plugin` with full agentic instructions.
+- Automatically tests connection and verifies all 8 provider quotas.
+
+### 1-Click Detach (Zero Residue)
+```cmd
+detach_from_antigravity.bat
+```
+- Restores original Antigravity configuration files.
+- Removes `swarm-agent-plugin` directory completely.
+- Leaves zero leftover files or settings.
+
+---
+
 ## Standalone CLI Commands
 
 The `swarm` CLI provides full management of the gateway and runtime:

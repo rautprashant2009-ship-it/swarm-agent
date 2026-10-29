@@ -79,6 +79,11 @@ if /i "%ARG1%"=="--wizard" goto :run_wizard
 if /i "%ARG1%"=="--status" goto :run_status
 if /i "%ARG1%"=="--daemon" goto :run_daemon
 
+if /i "%ARG1%"=="--attach-antigravity" goto :attach_antigravity
+if /i "%ARG1%"=="--detach-antigravity" goto :detach_antigravity
+if /i "%ARG1%"=="--antigravity-status" goto :antigravity_status
+if /i "%ARG1%"=="--antigravity-test" goto :antigravity_test
+
 :: 4. Check for config.json; if missing, launch wizard
 if not exist "config.json" (
     echo [!] No config.json found. Launching initial configuration wizard...
@@ -95,6 +100,26 @@ if not exist "config.json" (
 shift
 echo [*] Starting Swarm Gateway Server on configured host and port...
 !VENV_PYTHON! -m swarm.main %*
+goto :end
+
+:attach_antigravity
+shift
+!VENV_PYTHON! -m swarm antigravity attach %*
+goto :end
+
+:detach_antigravity
+shift
+!VENV_PYTHON! -m swarm antigravity detach %*
+goto :end
+
+:antigravity_status
+shift
+!VENV_PYTHON! -m swarm antigravity status %*
+goto :end
+
+:antigravity_test
+shift
+!VENV_PYTHON! -m swarm antigravity test %*
 goto :end
 
 :run_wizard
@@ -120,11 +145,15 @@ goto :end
 echo Usage: run_swarm.bat [OPTION]
 echo.
 echo Options:
-echo   --daemon   Start the gateway server daemon (default if config.json exists)
-echo   --wizard   Run the interactive configuration wizard for 8 free-tier providers
-echo   --status   Check the health and circuit breaker status of the local gateway
-echo   --test     Execute the automated pytest verification test suite
-echo   --help     Display this help message
+echo   --daemon                Start the gateway server daemon (default if config.json exists)
+echo   --wizard                Run the interactive configuration wizard for 8 free-tier providers
+echo   --status                Check the health and circuit breaker status of the local gateway
+echo   --test                  Execute the automated pytest verification test suite
+echo   --attach-antigravity    Temporarily attach Swarm Agent into Antigravity (MCP server + plugin)
+echo   --detach-antigravity    Cleanly detach Swarm Agent from Antigravity with zero residue
+echo   --antigravity-status    Check current Antigravity attachment status
+echo   --antigravity-test      Test Swarm MCP server protocol and capabilities
+echo   --help                  Display this help message
 echo.
 goto :end
 
